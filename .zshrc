@@ -41,3 +41,7 @@ alias ls="eza --icons=always"
 alias cd="z"
 
 eval "$(zoxide init zsh)"
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
+export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock

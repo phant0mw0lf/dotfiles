@@ -1,11 +1,9 @@
 [gpg]
 	format = ssh
-[gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
 [user]
-	signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCRmvxMAayeJ5Ion3ysQndz5PMklnJY2R3UeuaHHk2ak6hvWssmlPJM3ONu04cbe6LXcFuXkEddBmPVl2bzTZ2kE5c92Teh62vU+/qTfSyM5Ca9uu5Hxg7GTcsqVymUWihUGYwNQC8XBfMaIbP1IrDFs9zI5XJQ46Ai7G835/yD5NI63J7ok3MPd0SlEkN/4RdOBPiUCoEY2x/AqduiRpPkIX2lehp6BqIYMDN3g/GIoi8jC9DgXsVZArIiVOHG7VR7EPMxQkRMDITQiKlVLwqKyb6az3uj1yzGPnWNMe5d6BjlBCMBVZaTVV7djS8BsbIFILxBmqMvbCl9tlXR/6k5PRBPhNavPxd/TiOpCVXOApQz9MpyBmFIfEr7QajHLTsL3jM2rg8M2DvGUroO8FHIaSeIFHRJJNJTLonKIE+gtEil60pOzr+PB4OWH8kORFNENJC15up27tkowdF7EDWRGLtuIWRKIh5fRoueVO/sazVT5x9+bDAIb6Wf+kGiwxq4VaAi/Pcccej21sWrt/lebAhFxBeXf2lJEZt+17pw6pqA2ysjNvaMWwGeP8zttZXelCJkZkP4S1xzvA/rTmX7C7uFfdCBnXa9qQQWC19/YESnaleDDYzkKevUyTCH7GjTGKZuaFUsJ3OSAUmZJNhyqZX8u0pI8VpSCBCtqU04+Q==
+        signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk 
 	name = David Fengler
 	email = info@davidfengler.de
 [ghq]
