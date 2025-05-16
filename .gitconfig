@@ -3,8 +3,57 @@
 [commit]
 	gpgsign = true
 [user]
-        signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk 
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk 
 	name = David Fengler
 	email = info@davidfengler.de
 [ghq]
-	root = /Users/phant0mw0lf/dev
+  root = /Users/phant0mw0lf/dev
+
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[alias]
+	p = push
+	f = fetch
+	fp = fetch --prune
+	ss = s --short
+	s = status
+	st = status
+	sw = switch
+	sb = switch -
+	c = commit
+	a = add
+	am = commit --amend
+	amne = commit --amend --no-edit
+	br = branch
+
+	l = log --pretty=format:'%C(auto)%h %C(red)%as %C(blue)%aN%C(auto)%d%C(green) %s'
+	l1 = l -1
+	l5 = l -5
+	l10 = l -10
+	l20 = l -20
+
+	sl = stash list
+	sp = stash pop
+	ssu = stash save -u
+	sp1 = stash pop --index 1
+	sp2 = stash pop --index 2
+	sp3 = stash pop --index 3
+
+	untrack = rm --cached
+	unadd = restore --staged
+	gg = grep -E --line-number
+	# Diff of last commit
+	dlc = diff --cached HEAD^
+	# what would be merged
+	incoming = log HEAD..@{upstream}
+	# what would be pushed
+	outgoing = log @{upstream}..HEAD
+	# cleanup local branches that are not tracked in remote
+  clb = "!git fetch --prune && git branch -vv | grep ': gone]' | sed -E 's/^\\*?\\s*([^ ]+).*/\\1/' | xargs -r git branch -D"
+
+	structure = log --oneline --simplify-by-decoration --graph --all
+
+[checkout]
+	optimizeIndex = true
