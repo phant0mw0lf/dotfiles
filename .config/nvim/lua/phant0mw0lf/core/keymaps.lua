@@ -1,4 +1,4 @@
- -- set leader key to space
+-- set leader key to space
 vim.keymap.set("", "<Space>", "<Nop>")
 vim.g.mapleader = " "
 
@@ -9,6 +9,9 @@ local keymap = vim.keymap -- for conciseness
 
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+
+-- use <leader> + w to save
+keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" }) -- save file
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
