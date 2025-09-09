@@ -16,6 +16,20 @@ blur = true
 # alt_send_esc = false
 
 [font]
-normal.family = "MesloLGS Nerd Font Mono"
+size = 16.0
 
-size = 19
+[font.bold]
+family = "MesloLGS Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "MesloLGS Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "MesloLGS Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "MesloLGS Nerd Font Mono"
+style = "Regular"
