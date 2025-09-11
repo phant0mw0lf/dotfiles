@@ -1,0 +1,40 @@
+{
+  "global": { "show_in_menu_bar": false },
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "Caps Lock → Escape",
+            "manipulators": [
+              {
+                "from": { "key_code": "caps_lock" },
+                "to": [{ "key_code": "escape" }],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Left Alt → Alt+Ctrl+Cmd (AeroSpace modifier)",
+            "manipulators": [
+              {
+                "from": { "key_code": "left_option" },
+                "to": [
+                  {
+                    "key_code": "left_option",
+                    "modifiers": ["left_control", "left_command"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Custom",
+      "selected": true,
+      "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+    }
+  ]
+}
+

@@ -1,0 +1,2 @@
+# ignore karabiner backup files
+.config/karabiner/automatic_backups/*
