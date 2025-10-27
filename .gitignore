@@ -5,3 +5,6 @@
 
 .ssh/known_hosts
 .ssh/known_hosts.old
+
+# ignore .DS_Store
+**/.DS_Store
