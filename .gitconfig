@@ -5,7 +5,22 @@
 [user]
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk 
 	name = David Fengler
-	email = info@davidfengler.de
+  email = info@davidfengler.de
+
+# --- Work account overrides (for c4a8 and c4a8-sandbox GitHub orgs) ---
+
+# SSH remotes like git@github.com:c4a8/...
+[includeIf "hasconfig:remote.*.url:git@github.com:c4a8/*"]
+	path = ~/.gitconfig-work
+[includeIf "hasconfig:remote.*.url:git@github.com:c4a8-sandbox/*"]
+	path = ~/.gitconfig-work
+
+# HTTPS remotes like https://github.com/c4a8/...
+[includeIf "hasconfig:remote.*.url:https://github.com/c4a8/*"]
+	path = ~/.gitconfig-work
+[includeIf "hasconfig:remote.*.url:https://github.com/c4a8-sandbox/*"]
+  path = ~/.gitconfig-work
+
 [ghq]
   root = /Users/phant0mw0lf/dev
 
