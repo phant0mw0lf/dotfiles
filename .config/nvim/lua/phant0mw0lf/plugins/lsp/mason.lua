@@ -37,6 +37,7 @@ return {
 				"emmet_ls",
 				"prismals",
 				"pyright",
+				"marksman",
 			},
 		})
 
@@ -48,6 +49,8 @@ return {
 				"black", --python formatter
 				"pylint", --python linter
 				"eslint_d", --js linter
+				"markdownlint-cli2", -- markdown linter
+				"markdown-toc", -- markdown toc generator
 			},
 		})
 	end,

@@ -6,6 +6,14 @@ return {
 		"windwp/nvim-ts-autotag",
 	},
 	config = function()
+		-- custom filetypes
+		vim.filetype.add({
+			extension = {
+				mdx = "mdx",
+				tfvars = "hcl",
+			},
+		})
+
 		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
 
@@ -55,5 +63,8 @@ return {
 				},
 			},
 		})
+
+		-- register mdx to use markdown parser
+		vim.treesitter.language.register("markdown", "mdx")
 	end,
 }
