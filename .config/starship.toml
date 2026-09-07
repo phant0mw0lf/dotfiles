@@ -7,7 +7,7 @@ palette = "catppuccin_mocha"
 add_newline = false
 command_timeout = 1000
 format = """
-(bold green)$kubernetes$conda$python$directory$git_branch$git_status
+(bold green)$kubernetes$conda$python$directory$git_branch$git_status${env_var.CLAUDE_MODEL}${env_var.CLAUDE_CONTEXT}${env_var.CLAUDE_TOKENS}${env_var.CLAUDE_SESSION}
 [❯](bold green) """
 
 # Drop ugly default prompt characters
@@ -26,10 +26,11 @@ format = '[$path]($style)[$read_only]($read_only_style) '
 # Shows current git branch
 [git_branch]
 symbol = ' '
-format = 'on [$symbol$branch]($style)'
+format = 'on [$symbol$branch]($style) '
 # truncation_length = 4
 truncation_symbol = '…/'
 style = 'bold green'
+only_attached = true
 
 # Shows current git status
 [git_status]
@@ -88,6 +89,26 @@ disabled = true
 
 [terraform]
 disabled = true
+
+[env_var.CLAUDE_MODEL]
+variable = "CLAUDE_MODEL"
+format = "[\\[$env_value\\]]($style) "
+style = "bold cyan"
+
+[env_var.CLAUDE_CONTEXT]
+variable = "CLAUDE_CONTEXT"
+format = "[$env_value]($style) "
+style = "peach"
+
+[env_var.CLAUDE_TOKENS]
+variable = "CLAUDE_TOKENS"
+format = "[$env_value]($style) "
+style = "peach"
+
+[env_var.CLAUDE_SESSION]
+variable = "CLAUDE_SESSION"
+format = "[$env_value]($style)"
+style = "purple"
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
