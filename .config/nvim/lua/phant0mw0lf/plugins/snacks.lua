@@ -59,7 +59,21 @@ return {
         },
       },
       sources = {
-        explorer = { hidden = true, ignored = true, exclude = { ".DS_Store", ".git" } },
+        explorer = {
+          hidden = true,
+          ignored = true,
+          exclude = { ".DS_Store", ".git" },
+          win = {
+            list = {
+              keys = {
+                ["t"] = "tab", -- open in new tab (bufferline runs in tabs mode)
+                ["<c-t>"] = "tab", -- default was "terminal"; <c-/> toggles the terminal instead
+                ["s"] = "edit_split",
+                ["v"] = "edit_vsplit",
+              },
+            },
+          },
+        },
         files = { hidden = true },
         grep = { hidden = true },
       },
