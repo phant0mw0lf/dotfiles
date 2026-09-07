@@ -46,6 +46,6 @@ log "Neovim plugins, treesitter parsers and mason packages"
 nvim --headless "+Lazy! restore" +qa
 nvim --headless "+lua require('nvim-treesitter').install(require('phant0mw0lf.treesitter_parsers')):wait(900000)" +qa
 nvim --headless "+MasonToolsInstallSync" +qa
-nvim --headless "+UpdateRemotePlugins" +qa
+nvim --headless "+Lazy load molten-nvim" "+UpdateRemotePlugins" +qa
 
 log "Done. Open a new shell (or run: exec zsh)."
