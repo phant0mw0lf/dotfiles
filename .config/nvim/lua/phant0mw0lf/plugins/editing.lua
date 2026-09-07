@@ -171,7 +171,14 @@ return {
     opts = {
       default_file_explorer = true,
       view_options = { show_hidden = true },
-      keymaps = { ["q"] = "actions.close" },
+      keymaps = {
+        ["q"] = "actions.close",
+        -- keep <C-h/j/k/l> for vim-tmux-navigator (oil binds <C-h> to split-open and <C-l> to refresh)
+        ["<C-h>"] = false,
+        ["<C-l>"] = false,
+        ["<C-s>"] = { "actions.select", opts = { horizontal = true }, desc = "Open in horizontal split" },
+        ["gr"] = "actions.refresh",
+      },
     },
     keys = { { "-", "<cmd>Oil<cr>", desc = "Open parent directory (oil)" } },
     config = function(_, opts)
