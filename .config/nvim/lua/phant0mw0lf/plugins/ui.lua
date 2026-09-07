@@ -45,7 +45,7 @@ return {
     opts = function()
       local lazy_status = require("lazy.status")
       return {
-        options = { theme = "catppuccin", globalstatus = true },
+        options = { theme = "catppuccin-mocha", globalstatus = true },
         sections = {
           lualine_c = { { "filename", path = 1 } },
           lualine_x = {
