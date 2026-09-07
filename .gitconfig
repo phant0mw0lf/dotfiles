@@ -71,9 +71,16 @@
 	# what would be pushed
 	outgoing = log @{upstream}..HEAD
 	# cleanup local branches that are not tracked in remote
-  clb = "!git fetch --prune && git branch -vv | grep ': gone]' | sed -E 's/^\\*?\\s*([^ ]+).*/\\1/' | xargs -r git branch -D"
+	clb = "!git fetch --prune && git branch -vv | awk \"/: gone]/{sub(/^\\\\*/, \\\"\\\", \\$1); print \\$1}\" | xargs git branch -D"
 
 	structure = log --oneline --simplify-by-decoration --graph --all
+	wta = "!f() { git worktree add -b \"$1\" \"$1\"; }; f"
+	wtr = "!f() { git worktree remove \"$1\"; }; f"
+	wtl = "!f() { git worktree list; }; f"
+	wtae = "!f() { git worktree add \"$1\" \"$2\"; }; f"
+	clw = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{path=\\$2} /^branch/{branch=\\$2; print path, branch}\" | while read path branch; do b=\"${branch#refs/heads/}\"; [ \"$b\" = \"main\" ] && continue; git branch --merged origin/main | grep -qE \"^[* +] ${b}$\" && git worktree remove \"$path\" --force && echo \"Removed worktree: $path ($b)\"; done"
+	wtp = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{wt=\\$2} /^branch/{print wt, substr(\\$2,12)}\" | while read -r path branch; do case \"$branch\" in main|master) continue;; esac; if ! git show-ref --verify --quiet refs/remotes/origin/\"$branch\"; then echo \"Removing: $path ($branch)\"; git worktree remove --force \"$path\"; fi; done"
+	wtpd = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{wt=\\$2} /^branch/{print wt, substr(\\$2,12)}\" | while read -r path branch; do case \"$branch\" in main|master) continue;; esac; git show-ref --verify --quiet refs/remotes/origin/\"$branch\" || echo \"Would remove: $path ($branch)\"; done"
 
 [checkout]
 	optimizeIndex = true
@@ -87,3 +94,5 @@
 
 [merge]
 	tool = vimdiff
+[push]
+	autoSetupRemote = true
