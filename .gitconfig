@@ -1,52 +1,104 @@
+[user]
+	name = David Fengler
+	email = info@davidfengler.de
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk
+
 [gpg]
 	format = ssh
 [commit]
 	gpgsign = true
-[user]
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB50NS3C9NdZ4BOCX2DhC+ZiOgE4+o5zuDwGfuMYwQuk 
-	name = David Fengler
-  email = info@davidfengler.de
 
-# --- Work account overrides (for c4a8 and c4a8-sandbox GitHub orgs) ---
-
-# SSH remotes like git@github.com:c4a8/...
+# ---------- work identity (c4a8, c4a8-*, azurefoundation-* orgs) ----------
 [includeIf "hasconfig:remote.*.url:git@github.com:c4a8/*"]
 	path = ~/.gitconfig-work
 [includeIf "hasconfig:remote.*.url:git@github.com:c4a8-*/*"]
-  path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 [includeIf "hasconfig:remote.*.url:git@github.com:azurefoundation-*/*"]
 	path = ~/.gitconfig-work
-
-# HTTPS remotes like https://github.com/c4a8/...
 [includeIf "hasconfig:remote.*.url:https://github.com/c4a8/*"]
 	path = ~/.gitconfig-work
 [includeIf "hasconfig:remote.*.url:https://github.com/c4a8-*/*"]
-  path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 [includeIf "hasconfig:remote.*.url:https://github.com/azurefoundation-*/*"]
-  path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
 
-[ghq]
-  root = /Users/phant0mw0lf/dev
+# ---------- editor, pager, diff, merge ----------
+[core]
+	editor = nvim
+	pager = delta
+	autocrlf = input
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = false
+	syntax-theme = Catppuccin Mocha
+[diff]
+	tool = nvimdiff
+	algorithm = histogram
+	colorMoved = default
+	renames = true
+[difftool]
+	prompt = false
+[merge]
+	tool = nvimdiff
+	conflictstyle = zdiff3
+[mergetool]
+	keepBackup = false
+	prompt = false
+[mergetool "nvimdiff"]
+	layout = LOCAL,BASE,REMOTE / MERGED
 
+# ---------- behaviour ----------
+[init]
+	defaultBranch = main
 [column]
 	ui = auto
 [branch]
 	sort = -committerdate
+[tag]
+	sort = version:refname
+[checkout]
+	optimizeIndex = true
+[fetch]
+	prune = true
+	pruneTags = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+	followTags = true
+[rebase]
+	autoStash = true
+	updateRefs = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[help]
+	autocorrect = prompt
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+# ---------- aliases ----------
 [alias]
 	p = push
 	f = fetch
 	fp = fetch --prune
-	ss = s --short
 	s = status
 	st = status
+	ss = status --short
 	sw = switch
 	sb = switch -
 	c = commit
 	a = add
 	am = commit --amend
 	amne = commit --amend --no-edit
-  br = branch
-  bl = branch -l
+	br = branch
+	bl = branch -l
 
 	l = log --pretty=format:'%C(auto)%h %C(red)%as %C(blue)%aN%C(auto)%d%C(green) %s'
 	l1 = l -1
@@ -64,16 +116,17 @@
 	untrack = rm --cached
 	unadd = restore --staged
 	gg = grep -E --line-number
-	# Diff of last commit
+	# diff of last commit
 	dlc = diff --cached HEAD^
 	# what would be merged
 	incoming = log HEAD..@{upstream}
 	# what would be pushed
 	outgoing = log @{upstream}..HEAD
-	# cleanup local branches that are not tracked in remote
+	# delete local branches whose upstream is gone
 	clb = "!git fetch --prune && git branch -vv | awk \"/: gone]/{sub(/^\\\\*/, \\\"\\\", \\$1); print \\$1}\" | xargs git branch -D"
 
 	structure = log --oneline --simplify-by-decoration --graph --all
+	# worktrees
 	wta = "!f() { git worktree add -b \"$1\" \"$1\"; }; f"
 	wtr = "!f() { git worktree remove \"$1\"; }; f"
 	wtl = "!f() { git worktree list; }; f"
@@ -81,18 +134,3 @@
 	clw = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{path=\\$2} /^branch/{branch=\\$2; print path, branch}\" | while read path branch; do b=\"${branch#refs/heads/}\"; [ \"$b\" = \"main\" ] && continue; git branch --merged origin/main | grep -qE \"^[* +] ${b}$\" && git worktree remove \"$path\" --force && echo \"Removed worktree: $path ($b)\"; done"
 	wtp = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{wt=\\$2} /^branch/{print wt, substr(\\$2,12)}\" | while read -r path branch; do case \"$branch\" in main|master) continue;; esac; if ! git show-ref --verify --quiet refs/remotes/origin/\"$branch\"; then echo \"Removing: $path ($branch)\"; git worktree remove --force \"$path\"; fi; done"
 	wtpd = "!git fetch --prune && git worktree list --porcelain | awk \"/^worktree/{wt=\\$2} /^branch/{print wt, substr(\\$2,12)}\" | while read -r path branch; do case \"$branch\" in main|master) continue;; esac; git show-ref --verify --quiet refs/remotes/origin/\"$branch\" || echo \"Would remove: $path ($branch)\"; done"
-
-[checkout]
-	optimizeIndex = true
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[pull]
-  rebase = true
-
-[merge]
-	tool = vimdiff
-[push]
-	autoSetupRemote = true

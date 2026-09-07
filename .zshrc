@@ -1,58 +1,57 @@
-alias lg='lazygit'
-# alias vi='nvim'
-# alias vim='nvim'
-# alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+# ~/.zshrc — interactive zsh. PATH for every shell (incl. non-interactive) lives in ~/.zshenv.
 
-eval "$(starship init zsh)"
+# ---------- editor ----------
+export EDITOR=nvim
+export VISUAL=nvim
+export GIT_EDITOR=nvim
+export MANPAGER='nvim +Man!'
+alias vi='nvim'
+alias vim='nvim'
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-      else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# history setup
+# ---------- history ----------
 HISTFILE=$HOME/.zhistory
-SAVEHIST=1000
-HISTSIZE=999
-setopt share_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt share_history          # share between sessions
+setopt inc_append_history     # write immediately, not on exit
 setopt hist_expire_dups_first
-setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space      # commands starting with a space are not recorded
+setopt hist_reduce_blanks
 setopt hist_verify
 
-# completion using arrow keys (based on history)
+# ---------- completion ----------
+autoload -Uz compinit
+compinit -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # case-insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# arrow keys search history by prefix
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-alias ls="eza --icons=always"
-
-alias cd="z"
-
+# ---------- tools ----------
+eval "$(mise activate zsh)"     # opentofu, terragrunt, tflint, ruff, python, pwsh, ... (see ~/.config/mise/config.toml)
 eval "$(zoxide init zsh)"
-# Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+eval "$(starship init zsh)"
 
-export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# ---------- aliases ----------
+alias ls='eza --icons=always'
+alias ll='eza -la --icons=always --git --group-directories-first'
+alias lt='eza --tree --level=2 --icons=always'
+alias cd='z'                   # zoxide
+alias lg='lazygit'
+alias tofu-fmt='tofu fmt -recursive'
+
+# ---------- 1Password SSH agent ----------
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/david.fengler/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-# Homebrew-installed Python
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"
-
-# tenv setup
-# source $HOME/.tenv.completion.zsh
-export PATH=$(tenv update-path)
+# ---------- zsh plugins (syntax highlighting must be sourced last) ----------
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
