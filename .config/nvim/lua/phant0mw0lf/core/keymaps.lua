@@ -1,36 +1,40 @@
--- set leader key to space
-vim.keymap.set("", "<Space>", "<Nop>")
-vim.g.mapleader = " "
+local map = vim.keymap.set
 
-local keymap = vim.keymap -- for conciseness
+map("", "<Space>", "<Nop>")
 
----------------------
--- General Keymaps -------------------
+-- general
+map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
+map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+map("n", "<leader>q", "<cmd>confirm quit<CR>", { desc = "Close window" })
+map("n", "<leader>x", "<cmd>x<CR>", { desc = "Save and close" })
+map("n", "<leader>nh", "<cmd>nohl<CR>", { desc = "Clear search highlights" })
+map("n", "<Esc>", "<cmd>nohl<CR><Esc>", { desc = "Clear search highlights" })
+map("n", "<leader>+", "<C-a>", { desc = "Increment number" })
+map("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
+map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- use jk to exit insert mode
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+-- keep cursor centred while jumping
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
 
--- use <leader> + w to save
-keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" }) -- save file
+-- move lines, keep selection when indenting
+map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+map("x", "<leader>p", '"_dP', { desc = "Paste without yanking selection" })
 
--- clear search highlights
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+-- splits
+map("n", "<leader>sv", "<C-w>v", { desc = "Split vertically" })
+map("n", "<leader>sh", "<C-w>s", { desc = "Split horizontally" })
+map("n", "<leader>se", "<C-w>=", { desc = "Equalise splits" })
+map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close split" })
 
--- delete single character without copying into register
--- keymap.set("n", "x", '"_x')
-
--- increment/decrement numbers
-keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
-keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
-
--- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
-
-keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
-keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
-keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
-keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
-keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+-- tabs
+map("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "New tab" })
+map("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
+map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Next tab" })
+map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Previous tab" })
+map("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open buffer in new tab" })

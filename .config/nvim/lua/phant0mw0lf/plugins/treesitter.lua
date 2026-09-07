@@ -1,70 +1,82 @@
+local parsers = require("phant0mw0lf.treesitter_parsers")
+
 return {
-	"nvim-treesitter/nvim-treesitter",
-	event = { "BufReadPre", "BufNewFile" },
-	build = ":TSUpdate",
-	dependencies = {
-		"windwp/nvim-ts-autotag",
-	},
-	config = function()
-		-- custom filetypes
-		vim.filetype.add({
-			extension = {
-				mdx = "mdx",
-				tfvars = "hcl",
-			},
-		})
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter").setup({})
+      require("nvim-treesitter").install(parsers)
 
-		-- import nvim-treesitter plugin
-		local treesitter = require("nvim-treesitter.configs")
+      -- filetypes that reuse another parser
+      vim.treesitter.language.register("markdown", "mdx")
+      vim.treesitter.language.register("terraform", { "terraform-vars", "opentofu", "opentofu-vars" })
 
-		-- configure treesitter
-		treesitter.setup({ -- enable syntax highlighting
-			highlight = {
-				enable = true,
-			},
-			-- enable indentation
-			indent = { enable = true },
-			-- enable autotagging (w/ nvim-ts-autotag plugin)
-			autotag = {
-				enable = true,
-			},
-			-- ensure these language parsers are installed
-			ensure_installed = {
-				"json",
-				"javascript",
-				"typescript",
-				"tsx",
-				"yaml",
-				"html",
-				"css",
-				"prisma",
-				"markdown",
-				"markdown_inline",
-				"svelte",
-				"graphql",
-				"bash",
-				"lua",
-				"vim",
-				"dockerfile",
-				"gitignore",
-				"query",
-				"vimdoc",
-				"c",
-				"python",
-				"regex",
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<C-space>",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
-			},
-		})
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("phant0mw0lf_treesitter", { clear = true }),
+        callback = function(ev)
+          if pcall(vim.treesitter.start, ev.buf) then
+            vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
+  },
 
-		-- register mdx to use markdown parser
-		vim.treesitter.language.register("markdown", "mdx")
-	end,
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    event = "VeryLazy",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("nvim-treesitter-textobjects").setup({ select = { lookahead = true }, move = { set_jumps = true } })
+      local select = require("nvim-treesitter-textobjects.select")
+      local move = require("nvim-treesitter-textobjects.move")
+      local function sel(lhs, query, desc)
+        vim.keymap.set({ "x", "o" }, lhs, function()
+          select.select_textobject(query, "textobjects")
+        end, { desc = desc })
+      end
+      sel("af", "@function.outer", "a function")
+      sel("if", "@function.inner", "inner function")
+      sel("ac", "@class.outer", "a class")
+      sel("ic", "@class.inner", "inner class")
+      sel("aa", "@parameter.outer", "a parameter")
+      sel("ia", "@parameter.inner", "inner parameter")
+      sel("ab", "@block.outer", "a block")
+      sel("ib", "@block.inner", "inner block")
+      vim.keymap.set({ "n", "x", "o" }, "]f", function()
+        move.goto_next_start("@function.outer", "textobjects")
+      end, { desc = "Next function" })
+      vim.keymap.set({ "n", "x", "o" }, "[f", function()
+        move.goto_previous_start("@function.outer", "textobjects")
+      end, { desc = "Previous function" })
+      vim.keymap.set({ "n", "x", "o" }, "]a", function()
+        move.goto_next_start("@parameter.inner", "textobjects")
+      end, { desc = "Next parameter" })
+      vim.keymap.set({ "n", "x", "o" }, "[a", function()
+        move.goto_previous_start("@parameter.inner", "textobjects")
+      end, { desc = "Previous parameter" })
+    end,
+  },
+
+  {
+    -- sticky scroll
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { max_lines = 4, multiline_threshold = 2 },
+    keys = {
+      {
+        "<leader>ut",
+        function()
+          require("treesitter-context").toggle()
+        end,
+        desc = "Toggle sticky context",
+      },
+    },
+  },
+
+  { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" }, opts = {} },
 }
