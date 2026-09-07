@@ -1,0 +1,8 @@
+**/.claude/settings.local.json
+
+# graphify output + personal Claude notes (symlinked per worktree, never committed)
+graphify-out
+CLAUDE.local.md
+
+# c4a8 plugin state (regenerated per environment, never committed)
+.claude/c4a8-azure.hash

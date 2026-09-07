@@ -10,6 +10,8 @@ padding.y = 10
 
 decorations = "Buttonless"
 
+# MesloLGS Nerd Font Mono must be installed for icons and glyphs to render correctly.
+# Download: https://github.com/romkatv/powerlevel10k/blob/master/font.md
 [font]
 size = 16.0
 

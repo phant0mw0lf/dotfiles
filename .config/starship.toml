@@ -90,6 +90,10 @@ disabled = true
 [terraform]
 disabled = true
 
+# Claude Code session context — displayed in the prompt when a Claude Code session is active.
+# These env vars are set by Claude Code hooks; they are absent (and these sections are silently
+# skipped) in terminals that are not running inside a Claude Code session.
+# See: https://docs.anthropic.com/en/docs/claude-code/hooks
 [env_var.CLAUDE_MODEL]
 variable = "CLAUDE_MODEL"
 format = "[\\[$env_value\\]]($style) "

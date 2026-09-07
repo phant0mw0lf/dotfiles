@@ -1,0 +1,16 @@
+# stow ignore list (perl regexes, matched against paths relative to the package root)
+^/\.git$
+^/\.gitignore$
+^/\.stow-local-ignore$
+^/README\.md$
+^/CLAUDE\.md$
+^/Brewfile$
+^/install\.sh$
+^/\.editorconfig$
+# application state that must never be linked into ~ (also git-ignored)
+^/\.config/(1Password|NuGet|configstore|fab|gh|github-copilot|op|fish)$
+^/\.config/btop/btop\.log$
+^/\.ssh/known_hosts(\.old)?$
+^/\.claude/c4a8-azure\.hash$
+\.DS_Store
+^/\.ssh/agent$

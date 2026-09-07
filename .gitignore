@@ -1,14 +1,34 @@
-# ignore karabiner backup files
-.config/karabiner/automatic_backups/*
-
-# ignore known_hosts file
-
-.ssh/known_hosts
-.ssh/known_hosts.old
-
-# ignore .DS_Store
+# macOS
 **/.DS_Store
 
-# ignore github-copilot
-.config/github-copilot/*
+# ssh — only config is tracked; keys and state are never committed
+.ssh/known_hosts
+.ssh/known_hosts.old
+.ssh/id_*
+.ssh/*.pem
+.ssh/*.key
+.ssh/agent/
 
+# karabiner backups
+.config/karabiner/automatic_backups/*
+
+# application state that apps write into ~/.config (never config, never commit)
+.config/1Password/
+.config/NuGet/
+.config/configstore/
+.config/fab/
+.config/fish/
+.config/gh/
+.config/github-copilot/
+.config/op/
+.config/btop/btop.log
+
+# secrets and environment files — never commit
+.env
+.env.*
+*.secret
+*.secrets
+
+# c4a8-azure plugin artefacts (synced per session)
+/CLAUDE.md
+.claude/c4a8-azure.hash
