@@ -32,3 +32,4 @@
 # c4a8-azure plugin artefacts (synced per session)
 /CLAUDE.md
 .claude/c4a8-azure.hash
+.zshrc.local

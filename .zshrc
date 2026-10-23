@@ -49,9 +49,12 @@ alias tofu-fmt='tofu fmt -recursive'
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/david.fengler/.rd/bin:$PATH"
+[[ -d "$HOME/.rd/bin" ]] && export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # ---------- zsh plugins (syntax highlighting must be sourced last) ----------
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# ---------- machine-specific overrides (not tracked) ----------
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
