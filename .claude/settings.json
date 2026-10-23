@@ -1,5 +1,4 @@
 {
-  "model": "fable[1m]",
   "hooks": {
     "Notification": [
       {
@@ -109,5 +108,6 @@
     }
   },
   "tui": "fullscreen",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "claude-fable-5-1[1m]"
 }
